@@ -42,7 +42,7 @@ const CREATE_TASK = gql`
 export function TaskCreateForm() {
   const router = useRouter();
   const [createTask, { loading }] = useMutation(CREATE_TASK, {
-    refetchQueries: ['GET_TASKS'], // Now this matches the query name
+    refetchQueries: ['GET_TASKS'],
     onCompleted: () => {
       router.refresh();
       router.push("/dashboard");

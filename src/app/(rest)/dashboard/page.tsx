@@ -56,8 +56,7 @@ export default function DashboardPage() {
             key={task.id}
             task={task}
             onEdit={(task) => {
-              // Navigate to edit page
-              window.location.href = `/dashboard/tasks/${task.id}`;
+              window.location.href = `/tasks/${task.id}`;
             }}
             onDelete={handleDelete}
             isDeleting={deletingTaskId === task.id}

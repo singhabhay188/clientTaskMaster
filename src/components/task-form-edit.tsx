@@ -30,6 +30,20 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Task } from "@/types";
+import { useRouter } from "next/navigation";
+import { gql, useMutation } from "@apollo/client";
+
+const UPDATE_TASK = gql`
+  mutation UpdateTask($id: ID!, $title: String!, $description: String!, $status: String!, $dueDate: String) {
+    updateTask(id: $id, title: $title, description: $description, status: $status, dueDate: $dueDate) {
+      id
+      title
+      description
+      status
+      dueDate
+    }
+  }
+`;
 
 const taskSchema = z.object({
   title: z.string().min(1, "Title is short"),
@@ -38,26 +52,51 @@ const taskSchema = z.object({
   dueDate: z.date().optional(),
 });
 
-type TaskFormProps = {
-  initialData?: Task;
-  onSubmit: (data: z.infer<typeof taskSchema>) => void;
-  isLoading?: boolean;
-};
-
-export function TaskEditForm({ initialData, onSubmit, isLoading }: TaskFormProps) {
+export function TaskEditForm({ initialData }: { initialData: Task }) {
+  const router = useRouter();
+  const [updateTask, { loading, error }] = useMutation(UPDATE_TASK, {
+    refetchQueries: ['GET_TASKS'],
+    onCompleted: () => {
+      router.refresh();
+      router.push("/dashboard");
+    }
+  });
 
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
-    defaultValues: initialData || {
-      title: "",
-      description: "",
-      status: "PENDING",
+    defaultValues: {
+      title: initialData.title,
+      description: initialData.description,
+      status: initialData.status,
+      dueDate: initialData.dueDate ? new Date(Number(initialData.dueDate)) : undefined,
     },
   });
 
-  // function onSubmit(values: z.infer<typeof taskSchema>) {
-  //   console.log(values);
-  // }
+  const onSubmit = async (data: z.infer<typeof taskSchema>) => {
+    console.log("Form data:", data);
+
+    try {
+      const variables : Task = {
+        id: initialData.id,
+        title: data.title,
+        description: data.description,
+        status: data.status
+      };
+
+      if(data.dueDate) {
+        variables.dueDate = data.dueDate.toISOString();
+      }
+
+      console.log('variables:', variables);
+
+      const result = await updateTask({
+        variables
+      });
+      
+    } catch (err) {
+      console.error("Error updating task:", err);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -160,8 +199,10 @@ export function TaskEditForm({ initialData, onSubmit, isLoading }: TaskFormProps
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Saving..." : initialData ? "Update Task" : "Create Task"}
+        {error && <p>{error.message}</p>}
+
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Updating..." : "Update Task"}
         </Button>
       </form>
     </Form>
