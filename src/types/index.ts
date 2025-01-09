@@ -16,7 +16,6 @@ export type Task = {
   description?: string;
   status: "PENDING" | "IN_PROGRESS" | "COMPLETED";
   dueDate?: Date;
-  userId: string;
 
   createdAt: Date;
   updatedAt: Date;

@@ -1,108 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useQuery, gql } from "@apollo/client";
 import { TaskCard } from "@/components/task-card";
 import { Task } from "@/types";
 import Navbar from "@/components/navbar";
 
-// Temporary mock data
-const mockTasks: Task[] = [
-  {
-    id: "1",
-    title: "Complete Project Proposal1",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "2",
-    title: "Complete Project Proposal2",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "3",
-    title: "Complete Project Proposal3",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "4",
-    title: "Complete Project Proposal4",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "5",
-    title: "Complete Project Proposal5",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "6",
-    title: "Complete Project Proposal6",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "7",
-    title: "Complete Project Proposal7",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "8",
-    title: "Complete Project Proposal8",
-    description: "Write and submit the project proposal for the new client",
-    status: "PENDING",
-    dueDate: new Date("2024-04-01"),
-    userId: "user1",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  // Add more mock tasks as needed
-];
+// Define your GraphQL query
+const GET_TASKS = gql`
+  query ExampleQuery {
+  tasks {
+    title
+    description
+    status
+    dueDate
+    id
+  }
+}
+`;
 
 export default function DashboardPage() {
-  const [tasks, setTasks] = useState<Task[]>(mockTasks);
+  const { loading, error, data } = useQuery(GET_TASKS);
 
   const handleDelete = async (taskId: string) => {
     // Handle task deletion
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    // You may want to add a mutation for deletion here
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className="max-w-screen-2xl mx-auto">
-      <Navbar/>
+      <Navbar />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
-        {tasks.map((task) => (
+        {data.tasks.map((task: Task) => (
           <TaskCard
             key={task.id}
             task={task}
@@ -115,7 +46,7 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {tasks.length === 0 && (
+      {data.tasks.length === 0 && (
         <div className="text-center py-12">
           <p className="text-muted-foreground">No tasks found. Create a new task to get started!</p>
         </div>
