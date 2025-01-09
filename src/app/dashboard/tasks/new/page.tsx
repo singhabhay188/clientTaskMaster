@@ -14,10 +14,7 @@ export default function NewTaskPage() {
   };
 
   return (
-    <div className="max-w-screen-2xl mx-auto">
-      <Navbar/>
-
-      <div className="p-3">  
+    <div>  
         <Card className="max-w-2xl mx-auto">
           <CardHeader>
             <CardTitle className="text-2xl">Create New Task</CardTitle>
@@ -26,7 +23,6 @@ export default function NewTaskPage() {
             <TaskForm onSubmit={handleSubmit} />
           </CardContent>
         </Card>
-      </div>
     </div>
   );
 }

@@ -33,7 +33,7 @@ import { Task } from "@/types";
 
 const taskSchema = z.object({
   title: z.string().min(1, "Title is short"),
-  description: z.string().optional(),
+  description: z.string().min(10, "Write a longer description"),
   status: z.enum(["PENDING", "IN_PROGRESS", "COMPLETED"]),
   dueDate: z.date().optional(),
 });

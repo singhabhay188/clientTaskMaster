@@ -7,13 +7,15 @@ import { Calendar, Pencil, Trash2 } from "lucide-react";
 import { Task } from "../types";
 import { format } from "date-fns";
 
+// Add isDeleting to the props type
 type TaskCardProps = {
   task: Task;
   onEdit: (task: Task) => void;
   onDelete: (taskId: string) => void;
+  isDeleting?: boolean;
 };
 
-export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
+export function TaskCard({ task, onEdit, onDelete, isDeleting }: TaskCardProps) {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -34,6 +36,7 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
           variant="outline"
           size="sm"
           onClick={() => onEdit(task)}
+          disabled={isDeleting}
         >
           <Pencil className="h-4 w-4 mr-2" />
           Edit
@@ -42,9 +45,10 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
           variant="destructive"
           size="sm"
           onClick={() => onDelete(task.id)}
+          disabled={isDeleting}
         >
           <Trash2 className="h-4 w-4 mr-2" />
-          Delete
+          {isDeleting ? 'Deleting...' : 'Delete'}
         </Button>
       </CardFooter>
     </Card>

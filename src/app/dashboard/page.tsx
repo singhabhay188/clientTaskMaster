@@ -1,8 +1,9 @@
 "use client";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { TaskCard } from "@/components/task-card";
 import { Task } from "@/types";
-import Navbar from "@/components/navbar";
+import { useState } from "react";
+import MessageViewer from "@/components/message-viewer";
 
 // Define your GraphQL query
 const GET_TASKS = gql`
@@ -17,22 +18,39 @@ const GET_TASKS = gql`
 }
 `;
 
+const DELETE_TASK = gql`
+  mutation Mutation($deleteTaskId: ID!) {
+    deleteTask(id: $deleteTaskId)
+  }
+`;
+
 export default function DashboardPage() {
-  const { loading, error, data } = useQuery(GET_TASKS);
+  const { loading, error, data, refetch } = useQuery(GET_TASKS);
+  const [deleteTask] = useMutation(DELETE_TASK);
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
 
   const handleDelete = async (taskId: string) => {
-    // Handle task deletion
-    // You may want to add a mutation for deletion here
+    try {
+      setDeletingTaskId(taskId);
+      await deleteTask({
+        variables: {
+          deleteTaskId: taskId
+        }
+      });
+      await refetch();
+    } catch (err) {
+      console.error('Error deleting task:', err);
+    } finally {
+      setDeletingTaskId(null);
+    }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <MessageViewer message="Loading tasks..." />;
+  if (error) return <MessageViewer message={`Error: ${error.message}`} />;
 
   return (
-    <div className="max-w-screen-2xl mx-auto">
-      <Navbar />
-
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
+    <>
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
         {data.tasks.map((task: Task) => (
           <TaskCard
             key={task.id}
@@ -42,15 +60,12 @@ export default function DashboardPage() {
               window.location.href = `/dashboard/tasks/${task.id}`;
             }}
             onDelete={handleDelete}
+            isDeleting={deletingTaskId === task.id}
           />
         ))}
       </div>
 
-      {data.tasks.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">No tasks found. Create a new task to get started!</p>
-        </div>
-      )}
-    </div>
+      {data.tasks.length === 0 && <MessageViewer message="No tasks found. Create a new task to get started!" />}
+    </>
   );
 }
