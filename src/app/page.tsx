@@ -9,18 +9,10 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="max-w-screen-2xl mx-auto p-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <ListTodo className="h-6 w-6 text-primary" />
             <span className="font-bold text-xl">TaskMaster</span>
-          </div>
-          <div className="space-x-4">
-            <Link href="/auth/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link href="/auth/signup">
-              <Button className="bg-gradient-to-br from-gray-900 via-violet-900 to-gray-900">Sign Up</Button>
-            </Link>
           </div>
         </div>
       </header>
@@ -43,15 +35,10 @@ export default function Home() {
                 powerful yet intuitive task management system.
               </p>
               <div className="flex items-center justify-center gap-4">
-                <Link href="/auth/signup">
+                <Link href="/dashboard">
                   <Button size="lg" className="font-semibold bg-gradient-to-bl from-gray-900 via-violet-900 to-gray-900">
-                    Get Started for Free
+                    Go to Dashboard
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-                <Link href="/auth/login">
-                  <Button size="lg" variant="outline" className=" bg-gradient-to-r from-gray-900 via-violet-900 to-gray-900 bg-clip-text text-transparent">
-                    Live Demo
                   </Button>
                 </Link>
               </div>
@@ -134,9 +121,9 @@ export default function Home() {
             <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
               Join thousands of users who are already managing their tasks more efficiently.
             </p>
-            <Link href="/auth/signup">
+            <Link href="/dashboard">
               <Button size="lg" variant="secondary" className="font-semibold">
-                Start for Free
+                Go to Dashboard
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
