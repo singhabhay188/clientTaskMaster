@@ -1,23 +1,17 @@
 "use client";
 
 import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, ListTodo, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b z-50">
-        <div className="max-w-screen-2xl mx-auto p-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <ListTodo className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl">TaskMaster</span>
-          </div>
-        </div>
-      </header>
+    <div className="max-w-screen-2xl mx-auto">
+      <Navbar/>
 
-      <main className="flex-grow pt-16">
+      <main className="flex-grow">
         <section className="relative py-20 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-sky-50" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />

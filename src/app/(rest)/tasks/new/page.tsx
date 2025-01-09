@@ -2,7 +2,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TaskForm } from "@/components/task-form";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/navbar";
 
 export default function NewTaskPage() {
   const router = useRouter();
