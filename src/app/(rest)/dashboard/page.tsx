@@ -7,15 +7,15 @@ import MessageViewer from "@/components/message-viewer";
 
 // Define your GraphQL query
 const GET_TASKS = gql`
-  query ExampleQuery {
-  tasks {
-    title
-    description
-    status
-    dueDate
-    id
+  query GET_TASKS {
+    tasks {
+      title
+      description
+      status
+      dueDate
+      id
+    }
   }
-}
 `;
 
 const DELETE_TASK = gql`

@@ -1,17 +1,7 @@
-"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TaskForm } from "@/components/task-form";
-import { useRouter } from "next/navigation";
+import { TaskCreateForm } from "@/components/task-form";
 
 export default function NewTaskPage() {
-  const router = useRouter();
-
-  const handleSubmit = async (data: any) => {
-    // Handle task creation
-    console.log("Creating task:", data);
-    //router.push("/dashboard");
-  };
-
   return (
     <div>  
         <Card className="max-w-2xl mx-auto">
@@ -19,7 +9,7 @@ export default function NewTaskPage() {
             <CardTitle className="text-2xl">Create New Task</CardTitle>
           </CardHeader>
           <CardContent>
-            <TaskForm onSubmit={handleSubmit} />
+            <TaskCreateForm />
           </CardContent>
         </Card>
     </div>

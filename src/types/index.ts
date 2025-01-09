@@ -13,12 +13,18 @@ export type User = {
 export type Task = {
   id: string;
   title: string;
-  description?: string;
+  description: string;
   status: "PENDING" | "IN_PROGRESS" | "COMPLETED";
-  dueDate?: Date;
+  dueDate?: String;
 
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type TaskCreate = {
+  title: string;
+  description: string;
+  dueDate?: String;
 };
 
 export type AuthResponse = {

@@ -27,7 +27,7 @@ export function TaskCard({ task, onEdit, onDelete, isDeleting }: TaskCardProps) 
         {task.dueDate && (
           <div className="flex items-center mt-4 text-sm text-muted-foreground">
             <Calendar className="mr-2 h-4 w-4" />
-            <span>Due: {format(new Date(task.dueDate), 'PPP')}</span>
+            <span>Due: {format(new Date(Number(task.dueDate)), 'PPP')}</span>
           </div>
         )}
       </CardContent>

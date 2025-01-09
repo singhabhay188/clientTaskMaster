@@ -20,66 +20,44 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { useRouter } from "next/navigation";
-import { gql, useMutation } from "@apollo/client";
-import { taskSchema } from "@/lib/validation";
-import { TaskCreate } from "@/types";
+import { Task } from "@/types";
 
-const CREATE_TASK = gql`
-  mutation CreateTask($title: String!, $description: String!, $dueDate: String) {
-    createTask(title: $title, description: $description, dueDate: $dueDate) {
-      id
-      title
-      description
-      status
-      dueDate
-    }
-  }
-`;
+const taskSchema = z.object({
+  title: z.string().min(1, "Title is short"),
+  description: z.string().min(10, "Write a longer description"),
+  status: z.enum(["PENDING", "IN_PROGRESS", "COMPLETED"]),
+  dueDate: z.date().optional(),
+});
 
-export function TaskCreateForm() {
-  const router = useRouter();
-  const [createTask, { loading }] = useMutation(CREATE_TASK, {
-    refetchQueries: ['GET_TASKS'], // Now this matches the query name
-    onCompleted: () => {
-      router.refresh();
-      router.push("/dashboard");
-    }
-  });
+type TaskFormProps = {
+  initialData?: Task;
+  onSubmit: (data: z.infer<typeof taskSchema>) => void;
+  isLoading?: boolean;
+};
+
+export function TaskEditForm({ initialData, onSubmit, isLoading }: TaskFormProps) {
 
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       title: "",
       description: "",
-      dueDate: undefined
+      status: "PENDING",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof taskSchema>) => {
-    console.log("Form data:", data);
-    try {
-      let variables: TaskCreate = {
-        title: data.title,
-        description: data.description
-      };
-
-      if(data.dueDate) {
-        variables.dueDate = data.dueDate.toISOString();
-      }
-
-      console.log('variables:', variables);
-
-      const result = await createTask({
-        variables
-      });
-      router.push("/dashboard");
-    } catch (err) {
-      console.error("Error creating task:", err);
-    }
-  };
+  // function onSubmit(values: z.infer<typeof taskSchema>) {
+  //   console.log(values);
+  // }
 
   return (
     <Form {...form}>
@@ -110,6 +88,32 @@ export function TaskCreateForm() {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Status</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select task status" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="PENDING">Pending</SelectItem>
+                  <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+                  <SelectItem value="COMPLETED">Completed</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -155,8 +159,9 @@ export function TaskCreateForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Task"}
+
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? "Saving..." : initialData ? "Update Task" : "Create Task"}
         </Button>
       </form>
     </Form>

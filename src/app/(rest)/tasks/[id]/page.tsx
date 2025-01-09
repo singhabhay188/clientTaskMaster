@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TaskForm } from "@/components/task-form";
+import { TaskEditForm } from "@/components/task-form-edit";
 import { useRouter } from "next/navigation";
 import { Task } from "@/types";
 import Navbar from "@/components/navbar";
@@ -13,7 +13,6 @@ const mockTask: Task = {
   description: "Write and submit the project proposal for the new client",
   status: "PENDING",
   dueDate: new Date("2024-04-01"),
-  userId: "user1",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -36,7 +35,7 @@ export default function EditTaskPage({ params }: { params: { id: string } }) {
             <CardTitle className="text-2xl">Edit Task with id = {params.id}</CardTitle>
           </CardHeader>
           <CardContent>
-            <TaskForm
+            <TaskEditForm
               initialData={mockTask}
               onSubmit={handleSubmit}
             />
