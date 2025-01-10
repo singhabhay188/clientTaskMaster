@@ -3,7 +3,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, ListTodo, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle2, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {

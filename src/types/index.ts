@@ -3,11 +3,11 @@ export type Task = {
   title: string;
   description: string;
   status: "PENDING" | "IN_PROGRESS" | "COMPLETED";
-  dueDate?: String;
+  dueDate?: string;
 };
 
 export type TaskCreate = {
   title: string;
   description: string;
-  dueDate?: String;
+  dueDate?: string;
 };

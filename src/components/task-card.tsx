@@ -15,12 +15,25 @@ type TaskCardProps = {
   isDeleting?: boolean;
 };
 
+function getColorByStatus(status: string){
+  switch (status) {
+    case 'PENDING':
+      return 'bg-red-500 text-white';
+    case 'IN_PROGRESS':
+      return 'bg-yellow-500 text-black';
+    case 'COMPLETED':
+      return 'bg-green-500 text-white';
+    default:
+      return 'bg-gray-500 text-white';
+  }
+}
+
 export function TaskCard({ task, onEdit, onDelete, isDeleting }: TaskCardProps) {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg font-bold">{task.title}</CardTitle>
-        <Badge variant="outline">{task.status}</Badge>
+        <Badge variant="outline" className={`${getColorByStatus(task.status)}`}>{task.status}</Badge>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">{task.description}</p>

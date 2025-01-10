@@ -61,7 +61,7 @@ export function TaskCreateForm() {
   const onSubmit = async (data: z.infer<typeof taskSchema>) => {
     console.log("Form data:", data);
     try {
-      let variables: TaskCreate = {
+      const variables: TaskCreate = {
         title: data.title,
         description: data.description
       };
@@ -72,7 +72,7 @@ export function TaskCreateForm() {
 
       console.log('variables:', variables);
 
-      const result = await createTask({
+      await createTask({
         variables
       });
       router.push("/dashboard");

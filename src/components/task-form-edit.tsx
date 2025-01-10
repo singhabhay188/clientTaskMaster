@@ -89,7 +89,7 @@ export function TaskEditForm({ initialData }: { initialData: Task }) {
 
       console.log('variables:', variables);
 
-      const result = await updateTask({
+      await updateTask({
         variables
       });
       
