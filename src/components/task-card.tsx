@@ -18,7 +18,7 @@ type TaskCardProps = {
 function getColorByStatus(status: string){
   switch (status) {
     case 'PENDING':
-      return 'bg-red-500 text-white';
+      return 'bg-gray-500 text-white';
     case 'IN_PROGRESS':
       return 'bg-yellow-500 text-black';
     case 'COMPLETED':
