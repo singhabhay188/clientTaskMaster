@@ -52,55 +52,66 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4">
-      
       <div className="border-b-2 pb-4">
         <h3 className="text-xl font-semibold">In Progress Task</h3>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
-          {data.tasks.filter((task: Task) => task.status === 'IN_PROGRESS').map((task: Task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onEdit={(task) => {
-                window.location.href = `/tasks/${task.id}`;
-              }}
-              onDelete={handleDelete}
-              isDeleting={deletingTaskId === task.id}
-            />
-          ))}
+          {data.tasks.filter((task: Task) => task.status === 'IN_PROGRESS').length === 0 ? (
+            <MessageViewer message="No tasks in progress." />
+          ) : (
+            data.tasks.filter((task: Task) => task.status === 'IN_PROGRESS').map((task: Task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onEdit={(task) => {
+                  window.location.href = `/tasks/${task.id}`;
+                }}
+                onDelete={handleDelete}
+                isDeleting={deletingTaskId === task.id}
+              />
+            ))
+          )}
         </div>
       </div>
 
       <div className="border-b-2 pb-4">
         <h3 className="text-xl font-semibold">PENDING Task</h3>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
-          {data.tasks.filter((task: Task) => task.status === 'PENDING').map((task: Task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onEdit={(task) => {
-                window.location.href = `/tasks/${task.id}`;
-              }}
-              onDelete={handleDelete}
-              isDeleting={deletingTaskId === task.id}
-            />
-          ))}
+          {data.tasks.filter((task: Task) => task.status === 'PENDING').length === 0 ? (
+            <MessageViewer message="No pending tasks." />
+          ) : (
+            data.tasks.filter((task: Task) => task.status === 'PENDING').map((task: Task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onEdit={(task) => {
+                  window.location.href = `/tasks/${task.id}`;
+                }}
+                onDelete={handleDelete}
+                isDeleting={deletingTaskId === task.id}
+              />
+            ))
+          )}
         </div>
       </div>
 
       <div className="border-b-2 pb-4">
         <h3 className="text-xl font-semibold">Completed Task</h3>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 p-4">
-          {data.tasks.filter((task: Task) => task.status === 'COMPLETED').map((task: Task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              onEdit={(task) => {
-                window.location.href = `/tasks/${task.id}`;
-              }}
-              onDelete={handleDelete}
-              isDeleting={deletingTaskId === task.id}
-            />
-          ))}
+          {data.tasks.filter((task: Task) => task.status === 'COMPLETED').length === 0 ? (
+            <MessageViewer message="No completed tasks." />
+          ) : (
+            data.tasks.filter((task: Task) => task.status === 'COMPLETED').map((task: Task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onEdit={(task) => {
+                  window.location.href = `/tasks/${task.id}`;
+                }}
+                onDelete={handleDelete}
+                isDeleting={deletingTaskId === task.id}
+              />
+            ))
+          )}
         </div>
       </div>
 
